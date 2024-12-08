@@ -13,14 +13,14 @@ def front_page():
     return render_template('index.html', data={'Message' : 'Welcome to my page about flights'})
 
 @app.route('/departures', methods=['GET'])
-def arrivals():
+def departures():
     # for now use heathrow as default
     # TODO find out how to map to the ICAO code
 
     now = datetime.now()
     airport = request.args.get('icao', 'EGLL')
-    start_time = int(request.args.get('begin', now.timestamp()))
-    end_time = int(request.args.get('end', (now + timedelta(minutes = 10)).timestamp()))
+    start_time = int(request.args.get('begin', (now - timedelta(minutes = 30)).timestamp()))
+    end_time = int(request.args.get('end', (now + timedelta(minutes = 30)).timestamp()))
 
     departures = _getAPI().get_departures_by_airport(airport, start_time, end_time)
     return render_template('flight_info.html', data=departures)

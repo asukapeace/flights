@@ -8,7 +8,11 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Flight info</h1>
-    <p>{{data}}</p>
+    <h1> Flight info </h1>
+    <ul id="flightInfo">
+        {% for item in data %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
 </body>
 </html>
