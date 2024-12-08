@@ -9,10 +9,10 @@
 </head>
 <body>
     <h1> Flight info </h1>
-    <ul id="flightInfo">
-        {% for item in data %}
-          <li>{{ item }}</li>
-        {% endfor %}
-      </ul>
+    <script>
+        const data = {{data | tojson}};
+    </script>
+    <div id="flightInfo"></div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
