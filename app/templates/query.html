@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+    <meta charset="UTF-8">          
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='main.css')}}">  
+    <title>Document</title>
+</head>
+<body>
+    <h1>Departure Query</h1>
+    <form action="/departures" method="get">
+        <label for="icao">ICAO:</label>
+        <input type="text" id="icao" name="icao" required>
+        <label for="begin">Begin:</label>
+        <input type="datetime-local" id="begin" name="begin" required>
+        <label for="end">End:</label>
+        <input type="datetime-local" id="end" name="end" required>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
