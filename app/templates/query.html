@@ -7,15 +7,28 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Departure Query</h1>
-    <form action="/departures" method="get">
-        <label for="icao">ICAO:</label>
-        <input type="text" id="icao" name="icao" required>
-        <label for="begin">Begin:</label>
-        <input type="datetime-local" id="begin" name="begin" required>
-        <label for="end">End:</label>
-        <input type="datetime-local" id="end" name="end" required>
-        <button type="submit">Submit</button>
-    </form>
+    {% if 'departures' in data %}
+        <h1>Departure Query</h1>
+        <form action="/departures" method="get">
+            <label for="icao">ICAO:</label>
+            <input type="text" id="icao" name="icao" required>
+            <label for="begin">Begin:</label>
+            <input type="datetime-local" id="begin" name="begin" required>
+            <label for="end">End:</label>
+            <input type="datetime-local" id="end" name="end" required>
+            <button type="submit">Submit</button>
+        </form>
+    {% elif 'arrivals' in data %}
+        <h1>Arrival Query</h1>
+        <form action="/arrivals" method="get">
+            <label for="icao">ICAO:</label>
+            <input type="text" id="icao" name="icao" required>
+            <label for="begin">Begin:</label>
+            <input type="datetime-local" id="begin" name="begin" required>
+            <label for="end">End:</label>
+            <input type="datetime-local" id="end" name="end" required>
+            <button type="submit">Submit</button>
+        </form>
+    {% endif %}
 </body>
 </html>
