@@ -20,27 +20,14 @@ def arrivalsQuery():
     return render_template('query.html', data={'arrivals' : True})
 
 def _queryAndProcess(requestArgs, func):
-    # TODO find out how to map to the ICAO code
-/*************  ✨ Codeium Command ⭐  *************/
-    """
-    Handles the POST requests from the query forms.
-
-    requestArgs: the GET request arguments
-    func: the function to call to get the data
-
-    :return: a rendered template with the data
-    """
-/******  62c5b124-e09e-410f-bdb2-38d72fb14325  *******/
     airport = requestArgs.get('icao')
     start_time = int(datetime.strptime(requestArgs.get('begin'), "%Y-%m-%dT%H:%M").timestamp())
     end_time = int(datetime.strptime(requestArgs.get('end'), "%Y-%m-%dT%H:%M").timestamp())
 
-    departures = func(airport, start_time, end_time)
+    response = func(airport, start_time, end_time)
     data=[]
-    if departures:
-        headers = departures[0].__dict__.keys()
-
-        for d in departures:
+    if response:
+        for d in response:
             flightInfo = {}
             flightInfo['ICAO'] =  d.icao24
             flightInfo['Call sign'] = d.callsign
