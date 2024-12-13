@@ -20,6 +20,9 @@ def arrivalsQuery():
     return render_template('query.html', data={'arrivals' : True})
 
 def _queryAndProcess(requestArgs, func):
+    """
+    handles the request from the query page (arrivals or departures)
+    """
     airport = requestArgs.get('icao')
     start_time = int(datetime.strptime(requestArgs.get('begin'), "%Y-%m-%dT%H:%M").timestamp())
     end_time = int(datetime.strptime(requestArgs.get('end'), "%Y-%m-%dT%H:%M").timestamp())
@@ -40,8 +43,10 @@ def _queryAndProcess(requestArgs, func):
 
 @app.route('/arrivals', methods=['GET'])
 def arrivals():
+    """ returns dict of arrivals info for given airport and timerange"""
     return _queryAndProcess(request.args, _getAPI().get_arrivals_by_airport)
 
 @app.route('/departures', methods=['GET'])
 def departures():
+    """ returns dict of departure info for given airport and timerange"""
     return _queryAndProcess(request.args, _getAPI().get_departures_by_airport)
