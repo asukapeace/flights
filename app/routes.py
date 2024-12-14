@@ -19,13 +19,16 @@ def departureQuery():
 def arrivalsQuery():
     return render_template('query.html', data={'arrivals' : True})
 
+def _formatRequestDates(d):
+    return int(datetime.strptime(d, "%Y-%m-%dT%H:%M").timestamp())
+
 def _queryAndProcess(requestArgs, func):
     """
     handles the request from the query page (arrivals or departures)
     """
     airport = requestArgs.get('icao')
-    start_time = int(datetime.strptime(requestArgs.get('begin'), "%Y-%m-%dT%H:%M").timestamp())
-    end_time = int(datetime.strptime(requestArgs.get('end'), "%Y-%m-%dT%H:%M").timestamp())
+    start_time = _formatRequestDates(requestArgs.get('begin'))
+    end_time = _formatRequestDates(requestArgs.get('end'))
 
     response = func(airport, start_time, end_time)
     data=[]
@@ -50,3 +53,11 @@ def arrivals():
 def departures():
     """ returns dict of departure info for given airport and timerange"""
     return _queryAndProcess(request.args, _getAPI().get_departures_by_airport)
+
+@app.route('/aircraft', methods=['GET'])
+def aircraft():
+    icao24 = request.args.get('icao24')
+    begin = _formatRequestDates(request.args.get('begin'))
+    end = _formatRequestDates(request.args.get('end'))
+    data = _getAPI().get_flights_by_aircraft(icao24, begin, end)
+    return render_template('aircraft.html', data=data)
