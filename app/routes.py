@@ -19,6 +19,10 @@ def departureQuery():
 def arrivalsQuery():
     return render_template('query.html', data={'arrivals' : True})
 
+@app.route('/aircraftQuery', methods=['GET', 'POST'])
+def aircraftQuery():
+    return render_template('query.html', data={'aircraft' : True})
+
 def _formatRequestDates(d):
     return int(datetime.strptime(d, "%Y-%m-%dT%H:%M").timestamp())
 
@@ -61,3 +65,10 @@ def aircraft():
     end = _formatRequestDates(request.args.get('end'))
     data = _getAPI().get_flights_by_aircraft(icao24, begin, end)
     return render_template('aircraft.html', data=data)
+
+# @app.route('/track', methods=['GET'])
+# def track():
+#     icao24 = request.args.get('icao24')
+#     t = _formatRequestDates(request.args.get('time'))
+#     data = _getAPI().get_track_by_aircraft(icao24, t)
+#     return render_template('aircraft.html', data=data)
