@@ -77,9 +77,12 @@ def aircraft():
         flights.append(flight_info)
     return render_template('aircraft.html', data=flights)
 
-# @app.route('/track', methods=['GET'])
-# def track():
-#     icao24 = request.args.get('icao24')
-#     t = _formatRequestDates(request.args.get('time'))
-#     data = _getAPI().get_track_by_aircraft(icao24, t)
-#     return render_template('aircraft.html', data=data)
+@app.route('/current-position', methods=['GET'])
+def current_position():
+    icao24 = request.args.get('icao24')
+    states = _getAPI().get_states(icao24=icao24)
+    if states:
+        position = states.states[0].latitude, states.states[0].longitude
+    else:
+        position = None
+    return render_template('track_aircraft.html', icao24=icao24, position=position)
