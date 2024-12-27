@@ -40,6 +40,13 @@
             <input type="datetime-local" id="end" name="end" required>
             <button type="submit">Submit</button>
         </form>
+    {% elif 'current_position' in data %}
+        <h1>Current Position Query</h1>
+        <form action="/current-position" method="get">
+            <label for="icao24">ICAO24:</label>
+            <input type="text" id="icao24" name="icao24" required>
+            <button type="submit">Submit</button>
+        </form>
     {% endif %}
 </body>
 </html>

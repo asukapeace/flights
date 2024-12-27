@@ -23,6 +23,10 @@ def arrivalsQuery():
 def aircraftQuery():
     return render_template('query.html', data={'aircraft' : True})
 
+@app.route('/currentPositionQuery', methods=['GET', 'POST'])
+def currentPositionQuery():
+    return render_template('query.html', data={'current_position' : True})
+
 def _formatRequestDates(d):
     return int(datetime.strptime(d, "%Y-%m-%dT%H:%M").timestamp())
 
