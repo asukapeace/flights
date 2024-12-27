@@ -1,10 +1,27 @@
-body{  
-    background:black;  
-    color:red;  
-    margin-top: 5px;  
-    text-align: center
-} 
-#flightInfo {
+body {
+    background: black;
+    color: red;
+    margin-top: 5px;
+    text-align: center;
+  }
+  
+  #flightInfo {
     display: flex;
     justify-content: center;
-}
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f0f0f0;
+  }

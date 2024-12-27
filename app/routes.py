@@ -64,7 +64,18 @@ def aircraft():
     begin = _formatRequestDates(request.args.get('begin'))
     end = _formatRequestDates(request.args.get('end'))
     data = _getAPI().get_flights_by_aircraft(icao24, begin, end)
-    return render_template('aircraft.html', data=data)
+    flights = []
+    for flight in data:
+        flight_info = {
+            'icao24': flight.icao24,
+            'callsign': flight.callsign,
+            'estDepartureAirportHorizDistance': flight.estDepartureAirportHorizDistance,
+            'estDepartureAirportVertDistance': flight.estDepartureAirportVertDistance,
+            'estArrivalAirport': flight.estArrivalAirport,
+            'lastSeen': flight.lastSeen
+        }
+        flights.append(flight_info)
+    return render_template('aircraft.html', data=flights)
 
 # @app.route('/track', methods=['GET'])
 # def track():

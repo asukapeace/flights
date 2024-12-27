@@ -8,6 +8,10 @@
     <title>Document</title>
 </head>
 <body>
-    <p>{{data}}</p>
+    <script>
+        const data = {{data | tojson}};
+    </script>
+    <div id="flightInfo"></div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
