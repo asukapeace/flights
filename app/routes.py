@@ -56,15 +56,32 @@ def _query_and_process(request_args, func):
             data.append(flight_info)
     return render_template('flight_info.html', data=data)
 
+
 @app.route('/arrivals', methods=['GET'])
 def arrivals():
+    #TODO refactor this similar to depatures 
     """ returns dict of arrivals info for given airport and timerange"""
     return _query_and_process(request.args, _getAPI().get_arrivals_by_airport)
 
 @app.route('/departures', methods=['GET'])
 def departures():
     """ returns dict of departure info for given airport and timerange"""
-    return _query_and_process(request.args, _getAPI().get_departures_by_airport)
+    airport = request.args.get('icao')
+    start_time = _format_request_dates(request.args.get('begin'))
+    end_time = _format_request_dates(request.args.get('end'))
+
+    response = _getAPI().get_departures_by_airport(airport, start_time, end_time)
+    data=[]
+    if response:
+        for d in response:
+            flight_info = {}
+            flight_info['dep_airport'] = airport
+            flight_info['icao24'] =  d.icao24
+            flight_info['call_sign'] = d.callsign
+            flight_info['est_arrival_airport'] = d.estArrivalAirport
+            flight_info['time_last_seen'] = datetime.fromtimestamp(d.lastSeen).strftime('%Y-%m-%d %H:%M:%S') if d.lastSeen else d.lastSeen
+            data.append(flight_info)
+    return render_template('departures.html', departures=data)
 
 @app.route('/aircraft', methods=['GET'])
 def aircraft():
