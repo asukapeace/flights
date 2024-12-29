@@ -47,6 +47,13 @@
             <input type="text" id="icao24" name="icao24" required>
             <button type="submit">Submit</button>
         </form>
+    {% elif 'tracking' in data %}
+        <h1>Flight Path Query</h1>
+        <form action="/flight-path" method="get">
+            <label for="icao24">ICAO24:</label>
+            <input type="text" id="icao24" name="icao24" required>
+            <button type="submit">Submit</button>
+        </form>
     {% endif %}
 </body>
 </html>

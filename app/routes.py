@@ -27,6 +27,10 @@ def aircraft_query():
 def current_position_query():
     return render_template('query.html', data={'current_position' : True})
 
+@app.route('/flight-track-query', methods=['GET', 'POST'])
+def flight_track_query():
+    return render_template('query.html', data={'tracking' : True})
+
 def _format_request_dates(d):
     return int(datetime.strptime(d, "%Y-%m-%dT%H:%M").timestamp())
 
@@ -91,13 +95,13 @@ def current_position():
         position = None
     return render_template('track_aircraft.html', icao24=icao24, position=position)
 
-@app.route('/flight-path/<string:icao24>')
-def flight_path(icao24):
+@app.route('/flight-path', methods=['GET'])
+def flight_path():
+    icao24 = request.args.get('icao24')
     flight_tracks = _getAPI().get_track_by_aircraft(icao24)
 
     coordinates = []
     for track in flight_tracks.path:
-        print(track)
         coordinates.append((track[1], track[2]))
 
     return render_template('flight_path.html', icao24=icao24, coordinates=coordinates)
