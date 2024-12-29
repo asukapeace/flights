@@ -34,37 +34,45 @@ def flight_track_query():
 def _format_request_dates(d):
     return int(datetime.strptime(d, "%Y-%m-%dT%H:%M").timestamp())
 
-def _query_and_process(request_args, func):
-    """
-    handles the request from the query page (arrivals or departures)
-    """
-    airport = request_args.get('icao')
-    start_time = _format_request_dates(request_args.get('begin'))
-    end_time = _format_request_dates(request_args.get('end'))
+@app.route('/arrivals', methods=['GET'])
+def arrivals():
+    """ returns dict of arrivals info for given airport and timerange"""
+    airport = request.args.get('icao')
+    start_time = _format_request_dates(request.args.get('begin'))
+    end_time = _format_request_dates(request.args.get('end'))
 
-    response = func(airport, start_time, end_time)
+    response = _getAPI().get_arrivals_by_airport(airport, start_time, end_time)
     data=[]
     if response:
         for d in response:
             flight_info = {}
-            flight_info['ICAO'] =  d.icao24
-            flight_info['Call sign'] = d.callsign
-            flight_info['Estimated horiz distance from dep airport'] = d.estDepartureAirportHorizDistance
-            flight_info['Estimated vert distance from dep airport'] = d.estDepartureAirportVertDistance
-            flight_info['Estimated arrival airport'] = d.estArrivalAirport
-            flight_info['Time last seen'] = datetime.fromtimestamp(d.lastSeen).strftime('%Y-%m-%d %H:%M:%S') if d.lastSeen else d.lastSeen
+            flight_info['dep_airport'] =  d.estDepartureAirport
+            flight_info['icao24'] =  d.icao24
+            flight_info['call_sign'] = d.callsign
+            flight_info['est_arrival_airport'] = airport
+            flight_info['time_last_seen'] = datetime.fromtimestamp(d.lastSeen).strftime('%Y-%m-%d %H:%M:%S') if d.lastSeen else d.lastSeen
             data.append(flight_info)
-    return render_template('flight_info.html', data=data)
-
-@app.route('/arrivals', methods=['GET'])
-def arrivals():
-    """ returns dict of arrivals info for given airport and timerange"""
-    return _query_and_process(request.args, _getAPI().get_arrivals_by_airport)
+    return render_template('arrivals.html', arrivals=data)
 
 @app.route('/departures', methods=['GET'])
 def departures():
     """ returns dict of departure info for given airport and timerange"""
-    return _query_and_process(request.args, _getAPI().get_departures_by_airport)
+    airport = request.args.get('icao')
+    start_time = _format_request_dates(request.args.get('begin'))
+    end_time = _format_request_dates(request.args.get('end'))
+
+    response = _getAPI().get_departures_by_airport(airport, start_time, end_time)
+    data=[]
+    if response:
+        for d in response:
+            flight_info = {}
+            flight_info['dep_airport'] = airport
+            flight_info['icao24'] =  d.icao24
+            flight_info['call_sign'] = d.callsign
+            flight_info['est_arrival_airport'] = d.estArrivalAirport
+            flight_info['time_last_seen'] = datetime.fromtimestamp(d.lastSeen).strftime('%Y-%m-%d %H:%M:%S') if d.lastSeen else d.lastSeen
+            data.append(flight_info)
+    return render_template('departures.html', departures=data)
 
 @app.route('/aircraft', methods=['GET'])
 def aircraft():
