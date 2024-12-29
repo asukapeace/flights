@@ -90,3 +90,14 @@ def current_position():
     else:
         position = None
     return render_template('track_aircraft.html', icao24=icao24, position=position)
+
+@app.route('/flight-path/<string:icao24>')
+def flight_path(icao24):
+    flight_tracks = _getAPI().get_track_by_aircraft(icao24)
+
+    coordinates = []
+    for track in flight_tracks.path:
+        print(track)
+        coordinates.append((track[1], track[2]))
+
+    return render_template('flight_path.html', icao24=icao24, coordinates=coordinates)
