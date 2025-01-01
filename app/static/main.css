@@ -23,3 +23,25 @@ body {
   th {
     background-color: #f0f0f0;
   }
+
+  .link-image {
+    display: inline-block;
+    width: 112.5px;
+    height: 112.5px;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    text-align: center;
+    padding: 0;
+    margin: 20px;
+    position: relative;
+  }
+  
+  .link-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
