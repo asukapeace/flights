@@ -11,21 +11,38 @@
     <h1>Homepage</h1>
     <p>{{data.Message}} </p>
     <div class="row">
-        <a href="/departure-query" class="link-image">
-            <img src="{{ url_for('static', filename='assets/departure.png')}}" alt='plane departure'>
-        </a>
-        <a href="/arrivals-query" class="link-image">
-            <img src="{{ url_for('static', filename='assets/arrival.png')}}" alt='plane arrivals'>
-        </a>
-        <a href="/aircraft-query" class="link-image">
-            <img src="{{ url_for('static', filename='assets/aircraft.png')}}" alt='plane arrivals'>
-        </a>
-        <a href="/current-position-query" class = "link-image">
-            <img src="{{ url_for('static', filename='assets/current_position.png')}}" alt='plane arrivals'>
-        </a>
-        <a href="/flight-track-query" class="link-image">
-            <img src="{{ url_for('static', filename='assets/flight_track.png')}}" alt='plane arrivals'>
-        </a>
+        <div class="link-container">
+            <div class="link-image">
+                <a href="/departure-query">
+                    <img src="{{ url_for('static', filename='assets/departure.jpg')}}" alt='plane departure'>
+                </a>
+                <div class="link-text">Find depatures</div>
+            </div>
+            <div class="link-image">
+                <a href="/arrivals-query" class="link-image">
+                    <img src="{{ url_for('static', filename='assets/arrival.jpeg')}}" alt='plane arrivals'>
+                </a>
+                <div class="link-text">Find arrivals</div>
+            </div>
+            <div class="link-image">
+                <a href="/aircraft-query" class="link-image">
+                    <img src="{{ url_for('static', filename='assets/aircraft.jpeg')}}" alt='plane arrivals'>
+                </a>
+                <div class="link-text">Find an aircraft</div>
+            </div>
+            <div class="link-image">
+                <a href="/current-position-query" class = "link-image">
+                    <img src="{{ url_for('static', filename='assets/current_position.jpeg')}}" alt='plane arrivals'>
+                </a>
+                <div class="link-text">Find aircraft position</div>
+            </div>
+            <div class="link-image">
+                <a href="/flight-track-query" class="link-image">
+                    <img src="{{ url_for('static', filename='assets/flight_track.jpeg')}}" alt='plane arrivals'>
+                </a>
+                <div class="link-text">Track an aircraft</div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
