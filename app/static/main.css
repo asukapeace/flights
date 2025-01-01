@@ -23,3 +23,29 @@ body {
   th {
     background-color: #f0f0f0;
   }
+
+  .link-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .link-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  .link-image img {
+    width: 112.5px;
+    height: 112.5px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .link-text {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 10px;
+  }
