@@ -8,10 +8,29 @@
     <title>Document</title>
 </head>
 <body>
-    <script>
-        const data = {{data | tojson}};
-    </script>
-    <div id="flightInfo"></div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
+    <div class="container">
+      <h1>Flights</h1>
+      <table class="table table-striped">
+        <tr>
+          <th>Departure Airport</th>
+          <th>Call Sign</th>
+          <th>Estimated Arrival Airport</th>
+          <th>Time last seen</th>
+          <th>Track</th>
+        </tr>
+        {% for flightInfo in flights %}
+        <tr>
+          <td>{{ flightInfo.dep_airport }}</td>
+          <td>{{ flightInfo.call_sign }}</td>
+          <td>{{ flightInfo.est_arrival_airport }}</td>
+          <td>{{ flightInfo.time_last_seen }}</td>
+          <td>
+            <a href="{{ url_for('current_position', icao24=flightInfo.icao24) }}">Current Position</a> |
+            <a href="{{ url_for('flight_path', icao24=flightInfo.icao24) }}">Flight Path</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </body>
 </html>

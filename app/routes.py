@@ -79,19 +79,18 @@ def aircraft():
     icao24 = request.args.get('icao24')
     begin = _format_request_dates(request.args.get('begin'))
     end = _format_request_dates(request.args.get('end'))
-    data = _getAPI().get_flights_by_aircraft(icao24, begin, end)
+    response = _getAPI().get_flights_by_aircraft(icao24, begin, end)
     flights = []
-    for flight in data:
-        flight_info = {
-            'icao24': flight.icao24,
-            'callsign': flight.callsign,
-            'estDepartureAirportHorizDistance': flight.estDepartureAirportHorizDistance,
-            'estDepartureAirportVertDistance': flight.estDepartureAirportVertDistance,
-            'estArrivalAirport': flight.estArrivalAirport,
-            'lastSeen': flight.lastSeen
-        }
-        flights.append(flight_info)
-    return render_template('aircraft.html', data=flights)
+    if response:
+        for d in response:
+            flight_info = {}
+            flight_info['dep_airport'] = d.estDepartureAirport
+            flight_info['icao24'] =  d.icao24
+            flight_info['call_sign'] = d.callsign
+            flight_info['est_arrival_airport'] = d.estArrivalAirport
+            flight_info['time_last_seen'] = datetime.fromtimestamp(d.lastSeen).strftime('%Y-%m-%d %H:%M:%S') if d.lastSeen else d.lastSeen
+            flights.append(flight_info)
+    return render_template('aircraft.html', flights=flights)    
 
 @app.route('/current-position', methods=['GET'])
 def current_position():
