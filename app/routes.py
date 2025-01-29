@@ -2,6 +2,7 @@ from flask import render_template, request
 from app import app 
 from opensky_api import OpenSkyApi
 from datetime import datetime, timedelta
+from functools import lru_cache
 import json
 import airportsdata
 def _getAPI():
@@ -35,6 +36,10 @@ def flight_track_query():
 def _format_request_dates(d):
     return int(datetime.strptime(d, "%Y-%m-%dT%H:%M").timestamp())
 
+@lru_cache(maxsize=None)
+def _airports(field='ICAO'):
+    return airportsdata.load(field)
+
 @app.route('/arrivals', methods=['GET'])
 def arrivals():
     """ returns dict of arrivals info for given airport and timerange"""
@@ -47,10 +52,10 @@ def arrivals():
     if response:
         for d in response:
             flight_info = {}
-            flight_info['dep_airport'] =  airportsdata.load('ICAO')[d.estDepartureAirport]['name']
+            flight_info['dep_airport'] =  _airports()[d.estDepartureAirport]['name'] if d.estDepartureAirport in _airports() else d.estDepartureAirport
             flight_info['icao24'] =  d.icao24
             flight_info['call_sign'] = d.callsign
-            flight_info['est_arrival_airport'] = airportsdata.load('ICAO')[airport]['name']
+            flight_info['est_arrival_airport'] = _airports()[airport]['name']
             flight_info['time_last_seen'] = datetime.fromtimestamp(d.lastSeen).strftime('%Y-%m-%d %H:%M:%S') if d.lastSeen else d.lastSeen
             data.append(flight_info)
     return render_template('arrivals.html', arrivals=data)
@@ -67,10 +72,10 @@ def departures():
     if response:
         for d in response:
             flight_info = {}
-            flight_info['dep_airport'] = airportsdata.load('ICAO')[airport]['name']
+            flight_info['dep_airport'] = _airports()[airport]['name']
             flight_info['icao24'] =  d.icao24
             flight_info['call_sign'] = d.callsign
-            flight_info['est_arrival_airport'] = airportsdata.load('ICAO')[d.estArrivalAirport]['name']
+            flight_info['est_arrival_airport'] = _airports()[d.estArrivalAirport]['name'] if d.estArrivalAirport else d.estArrivalAirport
             flight_info['time_last_seen'] = datetime.fromtimestamp(d.lastSeen).strftime('%Y-%m-%d %H:%M:%S') if d.lastSeen else d.lastSeen
             data.append(flight_info)
     return render_template('departures.html', departures=data)
