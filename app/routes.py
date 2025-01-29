@@ -3,6 +3,7 @@ from app import app
 from opensky_api import OpenSkyApi
 from datetime import datetime, timedelta
 import json
+import airportsdata
 def _getAPI():
     return OpenSkyApi()
 
@@ -46,10 +47,10 @@ def arrivals():
     if response:
         for d in response:
             flight_info = {}
-            flight_info['dep_airport'] =  d.estDepartureAirport
+            flight_info['dep_airport'] =  airportsdata.load('ICAO')[d.estDepartureAirport]['name']
             flight_info['icao24'] =  d.icao24
             flight_info['call_sign'] = d.callsign
-            flight_info['est_arrival_airport'] = airport
+            flight_info['est_arrival_airport'] = airportsdata.load('ICAO')[airport]['name']
             flight_info['time_last_seen'] = datetime.fromtimestamp(d.lastSeen).strftime('%Y-%m-%d %H:%M:%S') if d.lastSeen else d.lastSeen
             data.append(flight_info)
     return render_template('arrivals.html', arrivals=data)
@@ -66,10 +67,10 @@ def departures():
     if response:
         for d in response:
             flight_info = {}
-            flight_info['dep_airport'] = airport
+            flight_info['dep_airport'] = airportsdata.load('ICAO')[airport]['name']
             flight_info['icao24'] =  d.icao24
             flight_info['call_sign'] = d.callsign
-            flight_info['est_arrival_airport'] = d.estArrivalAirport
+            flight_info['est_arrival_airport'] = airportsdata.load('ICAO')[d.estArrivalAirport]['name']
             flight_info['time_last_seen'] = datetime.fromtimestamp(d.lastSeen).strftime('%Y-%m-%d %H:%M:%S') if d.lastSeen else d.lastSeen
             data.append(flight_info)
     return render_template('departures.html', departures=data)
